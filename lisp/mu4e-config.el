@@ -138,4 +138,44 @@
     ))
 
 
+(setq work-inbox "maildir:/cambridge/Inbox OR maildir:/medschl/Inbox OR maildir:/sanger/Inbox")
+
+(setq personal-inbox "maildir:gmail/Inbox ")
+
+
+(add-to-list 'mu4e-bookmarks
+  '( :name  "Work today's inbox"
+     :query (concat work-inbox " AND (date:today..now OR flag:flagged)")
+     :key   ?w))
+
+
+(add-to-list 'mu4e-bookmarks
+  '( :name  "Work current inbox"
+     :query work-inbox
+     :key   ?l))
+
+
+
+
+(add-to-list 'mu4e-bookmarks
+  '( :name  "Personal inbox"
+     :query personal-inbox
+     :key   ?p))
+
+(add-to-list 'mu4e-bookmarks
+  '( :name  "Attachments"
+     :query "flag:attach"
+     :key   ?a))
+
+
+
+(setq mu4e-attachment-dir
+  (lambda (fname mtype)
+    (cond
+      ((and fname (string-match "\\.pdf$" fname))  "~/docs/pdf")
+      ;; ... other cases  ...
+      (t "~/Downloads"))))
+
+
+
 
