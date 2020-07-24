@@ -92,7 +92,7 @@
  '(org-agenda-files (quote ("~/current_work/work.org")))
  '(package-selected-packages
    (quote
-    (flycheck ess projectile treemacs use-package w3m ein spacemacs-theme monokai-theme conda bbdb)))
+    (company-lsp ccls lsp-ui lsp-mode cmake-ide rtags flycheck ess projectile treemacs use-package w3m ein spacemacs-theme monokai-theme conda bbdb)))
  '(pdf-view-midnight-colors (quote ("#655370" . "#fbf8ef"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -107,9 +107,18 @@
   (imagemagick-register-types))
 
 
-;; load email configuration
+
+;; Add custom scripts directory
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+
+
+
+;; load email configuration
 (load "mu4e-config")
+
+
+
+
 
 (require 'use-package)
 (use-package projectile
@@ -163,7 +172,7 @@
 
 
 
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/pdf-tools")
+
 
 
 
@@ -175,8 +184,50 @@
   )
 
 
+
+
+;; C++ configuration
+
+
+
+;; Load google identation code style
+(load "google-c-style")
+;; set style by hooking the rules
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+;; Return Key idents automagically
+(add-hook 'c-mode-common-hook 'google-make-newline-indent)
+
+
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :init
+  (global-flycheck-mode t))
+
+(use-package lsp-mode
+  :ensure t
+  :commands lsp)
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+(use-package company-lsp
+  :ensure t
+  :commands company-lsp)
+
+(use-package ccls
+  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+         (lambda () (require 'ccls) (lsp))))
+
+
+
+
+
+
+;; pdf-tools
+
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/pdf-tools")
+(pdf-tools-install)
+
+
 
 
 
@@ -184,7 +235,5 @@
 
 ;;(setq org-todo-keywords "#+TODO: TODO(t) STARTED(s) WAITING(w) | DONE(d) CANCELED(c)")
 ;;(setq org-tags-alist "#+TAGS: home(h) work(w) @computer(c) @phone(p) errants(e)")
-
-
 
 
