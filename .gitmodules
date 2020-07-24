@@ -1,0 +1,3 @@
+[submodule "slurm.el"]
+	path = slurm.el
+	url = ./external/slurm.el/
